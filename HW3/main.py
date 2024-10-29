@@ -60,11 +60,17 @@ def update_basket_a():
     # the file named index.html under templates folder
     return render_template('output.html', output = record)
 
-
-#@app.route('/api/unique/')
-#test
-    
-
+@app.route('/api/unique/')
+def unique():
+	cursor, connection = util.connect_to_db(username,password,host,port,database)
+	
+	record = util.run_and_fetch_sql("SELECT fruit_a FROM basket_a UNION SELECT fruit_b FROM basket_b")
+    	
+	# disconnect from database
+    	util.disconnect_from_db(connection,cursor)
+   	# using render_template function, Flask will search
+    	# the file named index.html under templates folder
+    	return render_template('output.html', output = record)
 
 
 if __name__ == '__main__':
