@@ -1,33 +1,72 @@
 <!DOCTYPE html>
-
 <html>
 <head>
     <style>
-    table, th, td {
-      border:1px solid black;
-    }
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+        table {
+            border-collapse: collapse;
+            width: 60%;
+            max-width: 600px;
+            background-color: #ffffff;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 12px;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        li {
+            padding: 5px 0;
+        }
+        li:nth-child(odd) {
+            background-color: #f9f9f9;
+        }
     </style>
 </head>
 
 <body>
 
-    <table>
-      <!-- tr represents a row -->
-      <tr>
-        {% for col_name in table_title %}
-            <th>{{col_name}}</th>
-        {% endfor %}
-      </tr>
-      {% for row in sql_table %}
-      <tr>
-        {% for col in row %}
-        <td>{{col}}</td>
-        {% endfor %}
-      </tr>
-      {% endfor %}
- 
-    </table> 
-
+<table>
+    <tr>
+        <th>Basket A</th>
+        <th>Basket B</th>
+    </tr>
+    <tr>
+        <td>
+            <ul>
+                {% for fruit in basket_a %}
+                    <li>{{ fruit }}</li>
+                {% endfor %}
+            </ul>
+        </td>
+        <td>
+            <ul>
+                {% for fruit in basket_b %}
+                    <li>{{ fruit }}</li>
+                {% endfor %}
+            </ul>
+        </td>
+    </tr>
+</table>
 
 </body>
 </html>
+

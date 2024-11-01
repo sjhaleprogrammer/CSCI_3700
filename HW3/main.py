@@ -57,6 +57,7 @@ def update_basket_a():
         record = "Success!"
     except(Exception, util.Error) as error:
         record = f"Error while executing SQL code: {error}"
+        util.disconnect_from_db(connection,cursor)
 
     # disconnect from database
     util.disconnect_from_db(connection,cursor)
@@ -65,25 +66,22 @@ def update_basket_a():
 
 @app.route('/api/unique/')
 def unique():
-    cursor, connection = util.connect_to_db(username,password,host,port,database)
-	
-    record = util.run_and_fetch_sql(cursor,"SELECT fruit_a FROM basket_a UNION SELECT fruit_b FROM basket_b")
-    if record == -1:
-        record = "Sql error!"
-        return record
-    else:
-        # this will return all column names of the select result table
-        col_names = [desc[0] for desc in cursor.description]
-        print(col_names)
-        # only use the first seven rows
-        log = record[:7]
+    cursor, connection = util.connect_to_db(username, password, host, port, database)
+
+    try:
+        cursor.execute("SELECT DISTINCT fruit_a FROM basket_a;")
+        basket_a = [row[0] for row in cursor.fetchall()]
+
+        cursor.execute("SELECT DISTINCT fruit_b FROM basket_b;")
+        basket_b = [row[0] for row in cursor.fetchall()]
+    except Exception as e:
+        message = f"SQL Error: {str(e)}"
+        return message
 
     # disconnect from database
-    util.disconnect_from_db(connection,cursor)
-    # using render_template function, Flask will search
-    # the file named unique.html under templates folder
-    return render_template('unique.html', sql_table = log, table_title=col_names)
-
+    util.disconnect_from_db(connection, cursor)
+    return render_template('unique.html', basket_a=basket_a, basket_b=basket_b)
+	
 
 if __name__ == '__main__':
 	# set debug mode
