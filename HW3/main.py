@@ -53,10 +53,10 @@ def update_basket_a():
     record = util.run_and_fetch_sql(cursor,"INSERT INTO basket_a VALUES (5, 'Cherry');")
     
 
-    if record == -1:
-        
+    if record == -1:     
         record = f"{record} something is wrong or the data already exist in the database"
-    
+    else:
+        record = "Success!"
         
     # disconnect from database
     util.disconnect_from_db(connection,cursor)
