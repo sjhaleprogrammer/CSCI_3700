@@ -49,16 +49,19 @@ def index():
 @app.route('/api/update_basket_a/')
 def update_basket_a():
     cursor, connection = util.connect_to_db(username,password,host,port,database)
-
-    record = util.run_and_fetch_sql(cursor,"INSERT INTO basket_a VALUES (5, 'Cherry');")
-
     
-        
+    record = ''
+    try:
+        cursor.execute("INSERT INTO basket_a VALUES (5, 'Cherry');")
+        cursor.connection.commit()
+        record = "Success!"
+    except(Exception, util.Error) as error:
+        record = f"Error while executing SQL code: {error}"
+
     # disconnect from database
     util.disconnect_from_db(connection,cursor)
-    # using render_template function, Flask will search
-    # the file named index.html under templates folder
-    return render_template('output.html', output = record)
+    
+    return render_template('update_basket_a.html', output = record)
 
 @app.route('/api/unique/')
 def unique():
