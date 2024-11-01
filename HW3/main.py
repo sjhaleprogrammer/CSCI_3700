@@ -69,8 +69,8 @@ def unique():
 	
     record = util.run_and_fetch_sql(cursor,"SELECT fruit_a FROM basket_a UNION SELECT fruit_b FROM basket_b")
     if record == -1:
-        # you can replace this part with a 404 page
-        print('Something is wrong with the SQL command')
+        record = "Sql error!"
+        return record
     else:
         # this will return all column names of the select result table
         col_names = [desc[0] for desc in cursor.description]
