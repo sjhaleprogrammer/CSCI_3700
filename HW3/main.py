@@ -51,14 +51,18 @@ def update_basket_a():
     cursor, connection = util.connect_to_db(username,password,host,port,database)
 
     record = util.run_and_fetch_sql(cursor,"INSERT INTO basket_a VALUES (5, 'Cherry');")
+    
 
+    if record == -1:
+        
+        record = f"{record} something is wrong or the data already exist in the database"
     
         
     # disconnect from database
     util.disconnect_from_db(connection,cursor)
     # using render_template function, Flask will search
     # the file named index.html under templates folder
-    return render_template('output.html', output = record)
+    return render_template('update_basket_a.html', output = record)
 
 
 #@app.route('/api/unique/')
