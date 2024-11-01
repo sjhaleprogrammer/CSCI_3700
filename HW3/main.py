@@ -63,11 +63,24 @@ def update_basket_a():
     
     return render_template('update_basket_a.html', output = record)
 
-
-#@app.route('/api/unique/')
-#test
-    
-
+@app.route('/api/unique/')
+def unique():
+	cursor, connection = util.connect_to_db(username,password,host,port,database)
+	
+	record = util.run_and_fetch_sql("SELECT fruit_a FROM basket_a UNION SELECT fruit_b FROM basket_b")
+    if record == -1:
+        # you can replace this part with a 404 page
+        print('Something is wrong with the SQL command')
+    else:
+        # this will return all column names of the select result table
+        col_names = [desc[0] for desc in cursor.description]
+        # only use the first seven rows
+        log = record[:7]	
+	# disconnect from database
+    util.disconnect_from_db(connection,cursor)
+   	# using render_template function, Flask will search
+    # the file named unique.html under templates folder
+    return render_template('unique.html', sql_table = log, table_title=col_names)
 
 
 if __name__ == '__main__':
